@@ -1,0 +1,12 @@
+{
+    "required": true,
+    "minVersion": "0.5.3",
+    "package": "top.whitecola.mixin",
+    "refmap": "mixins.doubleclicker2.refmap.json",
+    "mixins": [
+        "MixinKeyBinding"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

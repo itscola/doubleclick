@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+		
+//        maven {
+//            name = "sonatype"
+//            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+//        }
+
+        maven { url = "https://maven.aliyun.com/repository/public"}
+        maven { url = "https://lss233.littleservice.cn/repositories/forgedev" }
+        maven {
+            name = 'sponge'
+            url = 'http://lss233.littleservice.cn/repositories/minecraft'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.liteloader'
+apply plugin: 'org.spongepowered.mixin'
+
+version = "0.1.0"
+group = "top.whitecola.doubleclicker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "doubleclicker"
+
+minecraft {
+    // these values are defined in the gradle.properties file, so that this file does not need to be altered
+    version = "1.8.9"
+    mappings = "snapshot_20160301"
+    runDir = "run"
+}
+
+sourceSets {
+    main {
+        // Refmap declaration must match the refmap name specified in the json config
+        ext.refMap = "mixins.doubleclicker2.refmap.json"
+    }
+}
+
+mixin {
+    // liteloader does not do runtime deobfuscation, so in production we use "notch names", mixin needs to know this
+    defaultObfuscationEnv notch
+}
+
+litemod {
+    json {
+        name = "doubleclicker2"
+        version = project.version
+        mcversion = "1.8.9"
+        author = "White_cola"
+        description = "doubleclicker2"
+        mixinConfigs += "mixins.doubleclicker.json"
+    }
+}
+
+jar {
+    // The litemod task above generates the litemod.json dynamically, you can replace it with a resource if you want more control
+    from litemod.outputs
+}
